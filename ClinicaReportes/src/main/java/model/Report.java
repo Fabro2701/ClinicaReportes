@@ -1,7 +1,14 @@
 package model;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import model.person.Doctor;
 
@@ -12,10 +19,19 @@ public class Report {
 	public static List<String>attributes;
 	static {
 		attributes = new ArrayList<String>();
+		attributes.add("CMP");
+		attributes.add("Fecha");
+		attributes.add("Paciente");
 		attributes.add("Rubro");
+		attributes.add("Aseguradora");
+		attributes.add("Tipo Adm");
+		attributes.add("Historia Clinica");
 	}
 	public static List<Modifier>modifiers;
-	
+	static {
+		modifiers = new ArrayList<Modifier>();
+		modifiers.add(new Modifier("default","0.01"));
+	}
 	private Report() {
 		ownSales = new ArrayList<Sale>();
 		calculations = new ArrayList<Double>();
@@ -25,7 +41,7 @@ public class Report {
 		this();
 		this.doctor = doctor;
 	}
-	public class Modifier{
+	public static class Modifier{
 		String num;
 		double factor;
 		public Modifier(String num, String factor) {
@@ -47,7 +63,7 @@ public class Report {
 				this.ownSales.add(sale);
 			}
 		}
-		
+		sales.removeAll(this.ownSales);
 	}
 
 	public void setCalculations() {
@@ -62,16 +78,83 @@ public class Report {
 		
 	}
 	public void save(String destination) {
-		for(Sale sale:this.ownSales) {
+		XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("resumen");
+         
+     
+ 
+        int rowCount = 1;
+        int columnCount = 0;
+        
+        //header
+        Row row = sheet.createRow(rowCount);
+        for(String att:Report.attributes) {
+        	Cell cell = row.createCell(++columnCount);
+			cell.setCellValue(att);
+        }
+        
+        //Sale details
+        columnCount = 0;
+        for(Sale sale:this.ownSales) {
+        	row = sheet.createRow(++rowCount);
+        	columnCount = 0;
 			for(String att:Report.attributes) {
-				sale.data.get(Sale.attributes.get(att));
+				Cell cell = row.createCell(++columnCount);
+				cell.setCellValue(sale.data.get(Sale.attributes.get(att)));
 			}
 		}
-		double sum=0.0;
+        
+        //Sale subtotal
+        rowCount = 1;
+        for(Sale sale:this.ownSales) {
+        	row = sheet.getRow(++rowCount);
+			Cell cell = row.createCell(columnCount);
+			cell.setCellValue(sale.subtotal);
+		}
+
+        //subtotal comission
+        double sum=0.0;
+        rowCount = 1;
+        columnCount++;
 		for(double v:this.calculations) {
+			row = sheet.getRow(++rowCount);
+			Cell cell = row.createCell(columnCount);
+			cell.setCellValue(v);
 			sum += v;
 		}
 		
+		row = sheet.createRow(++rowCount);
+		Cell cell = row.createCell(++columnCount);
+		cell.setCellValue(sum);
+		
+//        for (Object[] aBook : bookData) {
+//            Row row = sheet.createRow(++rowCount);
+//             
+//            columnCount = 0;
+//             
+//            for (Object field : aBook) {
+//                Cell cell = row.createCell(++columnCount);
+//                if (field instanceof String) {
+//                    cell.setCellValue((String) field);
+//                } else if (field instanceof Integer) {
+//                    cell.setCellValue((Integer) field);
+//                }
+//            }
+//             
+//        }
+		
+		
+		FileOutputStream outputStream;
+		try {
+			File file = new File(destination+this.doctor.getFullname()+this.doctor.getCMP()+".xlsx");
+			
+			outputStream = new FileOutputStream(file);
+	        workbook.write(outputStream);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 		
 	}
 
