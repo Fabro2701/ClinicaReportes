@@ -16,7 +16,9 @@ import model.person.Doctor;
 public class LauncherGUI extends javax.swing.JFrame {
 	DoctorManager doctorManager;
 	Vector<Vector<Object>> doctorsData;
+	Vector<Vector<Object>> modifiersData;
 	DefaultTableModel doctorsTableModel;
+	DefaultTableModel modifiersTableModel;
     /**
      * Creates new form LauncherGUI
      */
@@ -29,6 +31,10 @@ public class LauncherGUI extends javax.swing.JFrame {
 	    	Vector<Object> header = new Vector<Object>();
 	    	header.add("CMP");header.add("Nombre y Apellidos");
 	    	doctorsTableModel = new DefaultTableModel(doctorsData,header);
+			modifiersData = new Vector<Vector<Object>>();
+	    	Vector<Object> header2 = new Vector<Object>();
+	    	header2.add("Valor");header2.add("Porcentaje");
+	    	modifiersTableModel = new DefaultTableModel(modifiersData,header2);
 	    	
 	        initComponents();
 	        
@@ -50,10 +56,16 @@ public class LauncherGUI extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
-    private void initComponents(){
+    private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        jpDocsGeneration = new javax.swing.JPanel();
+        jtfDocumentsFile = new javax.swing.JTextField();
+        jlDocumentsCounter = new javax.swing.JLabel();
+        jbAddDocument = new javax.swing.JButton();
+        jbGenerate = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jtModifiers = new javax.swing.JTable();
         jpDoctorManager = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableDoctors = new javax.swing.JTable();
@@ -64,18 +76,60 @@ public class LauncherGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 786, Short.MAX_VALUE)
+        jlDocumentsCounter.setText("Documentos cargados: 0");
+
+        jbAddDocument.setText("Seleccionar");
+        jbAddDocument.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAddDocumentActionPerformed(evt);
+            }
+        });
+
+        jbGenerate.setText("Generar");
+        jbGenerate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbGenerateActionPerformed(evt);
+            }
+        });
+
+        jtModifiers.setModel(modifiersTableModel);
+        jScrollPane2.setViewportView(jtModifiers);
+
+        javax.swing.GroupLayout jpDocsGenerationLayout = new javax.swing.GroupLayout(jpDocsGeneration);
+        jpDocsGeneration.setLayout(jpDocsGenerationLayout);
+        jpDocsGenerationLayout.setHorizontalGroup(
+            jpDocsGenerationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpDocsGenerationLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jpDocsGenerationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpDocsGenerationLayout.createSequentialGroup()
+                        .addComponent(jlDocumentsCounter, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbGenerate))
+                    .addGroup(jpDocsGenerationLayout.createSequentialGroup()
+                        .addComponent(jtfDocumentsFile, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(jbAddDocument)))
+                .addContainerGap(303, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
+        jpDocsGenerationLayout.setVerticalGroup(
+            jpDocsGenerationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpDocsGenerationLayout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jpDocsGenerationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfDocumentsFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbAddDocument))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpDocsGenerationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlDocumentsCounter)
+                    .addComponent(jbGenerate))
+                .addGap(65, 65, 65)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Genración de reportes", jPanel1);
+        jTabbedPane1.addTab("Genración de reportes", jpDocsGeneration);
 
         jTableDoctors.setModel(doctorsTableModel);
         jScrollPane1.setViewportView(jTableDoctors);
@@ -93,7 +147,7 @@ public class LauncherGUI extends javax.swing.JFrame {
 
         jbRemoveDoctor.setText("Eliminar");
         jbRemoveDoctor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt){
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbRemoveDoctorActionPerformed(evt);
             }
         });
@@ -154,7 +208,7 @@ public class LauncherGUI extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>                       
 
     private void jbAddDoctorActionPerformed(java.awt.event.ActionEvent evt) {      
     	Doctor doctor = new Doctor(this.jtfFullName.getText(), this.jtfCMP.getText());
@@ -179,6 +233,14 @@ public class LauncherGUI extends javax.swing.JFrame {
        	
     }    
     
+
+	private void jbAddDocumentActionPerformed(java.awt.event.ActionEvent evt) {                                              
+	// TODO add your handling code here:
+	}                                             
+	
+	private void jbGenerateActionPerformed(java.awt.event.ActionEvent evt) {                                           
+	// TODO add your handling code here:
+	}    
     private void updateDoctorsTable() throws FileException {
     	doctorsData.clear();
     	for(Doctor doctor:this.doctorManager) {
@@ -227,15 +289,21 @@ public class LauncherGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableDoctors;
     private javax.swing.JButton jbAddDoctor;
+    private javax.swing.JButton jbAddDocument;
+    private javax.swing.JButton jbGenerate;
     private javax.swing.JButton jbRemoveDoctor;
+    private javax.swing.JLabel jlDocumentsCounter;
+    private javax.swing.JPanel jpDocsGeneration;
     private javax.swing.JPanel jpDoctorManager;
+    private javax.swing.JTable jtModifiers;
     private javax.swing.JTextField jtfCMP;
+    private javax.swing.JTextField jtfDocumentsFile;
     private javax.swing.JTextField jtfFullName;
-    // End of variables declaration                   
+    // End of variables declaration                    
 }
 
