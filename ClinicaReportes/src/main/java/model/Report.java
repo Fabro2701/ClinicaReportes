@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import comission.ComissionsManager;
 import model.person.Doctor;
 
 public class Report {
@@ -23,15 +24,12 @@ public class Report {
 		attributes.add("Fecha");
 		attributes.add("Paciente");
 		attributes.add("Rubro");
-		attributes.add("Aseguradora");
-		attributes.add("Tipo Adm");
-		attributes.add("Historia Clinica");
+		attributes.add("Cía. Aseguradora");
+		attributes.add("Tipo Adm.");
+		attributes.add("Historia Clínica");
+		attributes.add("Tarifario");
 	}
-	public static List<Modifier>modifiers;
-	static {
-		modifiers = new ArrayList<Modifier>();
-		modifiers.add(new Modifier("default","0.01"));
-	}
+	
 	private Report() {
 		ownSales = new ArrayList<Sale>();
 		calculations = new ArrayList<Double>();
@@ -41,21 +39,7 @@ public class Report {
 		this();
 		this.doctor = doctor;
 	}
-	public static class Modifier{
-		String num;
-		double factor;
-		public Modifier(String num, String factor) {
-			this.num = num;
-			this.factor = Double.parseDouble(factor);
-		}
-		public boolean evaluate(Sale sale) {
-			if(num.equals("default"))return true;
-			return Double.parseDouble(num) < sale.subtotal;
-		}
-		public Double getResult(Sale sale) {
-			return factor*sale.subtotal;
-		}
-	}
+	
 	public void extract(List<Sale>sales) {
 		for(Sale sale:sales) {
 			String cmp = sale.data.get(Sale.attributes.get("CMP"));
@@ -66,16 +50,10 @@ public class Report {
 		sales.removeAll(this.ownSales);
 	}
 
-	public void setCalculations() {
+	public void setCalculations(ComissionsManager comissionsManager) {
 		for(Sale sale:this.ownSales) {
-			for(Modifier modifier:Report.modifiers) {
-				if(modifier.evaluate(sale)) {
-					this.calculations.add(modifier.getResult(sale));
-					break;
-				}
-			}
+			this.calculations.add(comissionsManager.getComissions(sale));
 		}
-		
 	}
 	public void save(String destination) {
 		XSSFWorkbook workbook = new XSSFWorkbook();

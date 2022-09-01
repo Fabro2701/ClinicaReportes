@@ -20,13 +20,13 @@ public class Sale {
 	static {
 		attributes = new HashMap<String, Integer>();
 		attributes.put("Rubro", 0);
-		attributes.put("Aseguradora", 1);
+		attributes.put("Cía. Aseguradora", 1);
 		attributes.put("CMP", 2);
 		attributes.put("Fecha", 3);
-		attributes.put("Tipo Adm", 5);
-		attributes.put("Historia Clinica", 6);
+		attributes.put("Tipo Adm.", 5);
+		attributes.put("Historia Clínica", 6);
 		attributes.put("Paciente", 7);
-		//attributes.put("Subtotal", 14);
+		attributes.put("Tarifario", 11);
 	}
 	public Sale() {
 		data = new ArrayList<String>();

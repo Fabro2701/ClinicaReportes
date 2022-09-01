@@ -15,15 +15,18 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 
+import comission.ComissionsManager;
 import exceptions.FileException;
 import model.person.Doctor;
 
 public class ReportsCreator {
 	protected List<Sale>sales;
 	protected DoctorManager doctorManager;
-	public ReportsCreator(DoctorManager doctorManager) {
+	protected ComissionsManager comissionsManager;
+	public ReportsCreator(DoctorManager doctorManager, ComissionsManager comissionsManager) {
 		sales = new ArrayList<Sale>();
 		this.doctorManager = doctorManager;
+		this.comissionsManager = comissionsManager;
 	}
 	public void addFiles(File files[]) throws FileException {
 		for(File file:files) {
@@ -71,7 +74,7 @@ public class ReportsCreator {
 		for(Doctor doctor:doctorManager) {
 			Report report = new Report(doctor);
 			report.extract(sales);
-			report.setCalculations();
+			report.setCalculations(comissionsManager);
 			report.save(destination);
 			sales.removeAll(report.ownSales);
 		}
