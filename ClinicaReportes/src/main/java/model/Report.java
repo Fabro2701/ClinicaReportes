@@ -56,6 +56,11 @@ public class Report {
 		}
 	}
 	public void save(String destination) {
+		if(this.ownSales.size()==0) {
+			System.out.println("No sales for: "+this.doctor.toString());
+			return;
+		}
+		System.out.println("Saving "+this.doctor.toString()+" sales");
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("resumen");
          

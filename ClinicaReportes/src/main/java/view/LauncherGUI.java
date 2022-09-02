@@ -2,6 +2,9 @@ package view;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -292,7 +295,8 @@ public class LauncherGUI extends javax.swing.JFrame {
 	}                                             
 	
 	private void jbGenerateActionPerformed(java.awt.event.ActionEvent evt) {    
-		this.reportsCreator.generate(this.jtfDestinationFolder.getText(), this);                                        
+		this.reportsCreator.generate(this.jtfDestinationFolder.getText(), this);     
+		JOptionPane.showMessageDialog(this, "Documentos generados");
 	}    
 
     private void jbSelectDestinationFolderActionPerformed(java.awt.event.ActionEvent evt) {    
@@ -302,18 +306,35 @@ public class LauncherGUI extends javax.swing.JFrame {
 		int result = chooser.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = chooser.getSelectedFile();
+			
 			try {
 				this.jtfDestinationFolder.setText(selectedFile.getCanonicalPath());
-			} catch (Exception e) {
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(this, e);
 			}
+			
 		}
     	
     }  
 
-    private void jbApplyActionPerformed(java.awt.event.ActionEvent evt) {   
-		comissionsManager.update(ComissionsManager.parser.parse(this.jtaComissions.getText()));
+    private void jbApplyActionPerformed(java.awt.event.ActionEvent evt) {  
+    	try {
+    		comissionsManager.update(ComissionsManager.parser.parse(this.jtaComissions.getText()));
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    		JOptionPane.showMessageDialog(this, "Error en la sintaxis de las comisiones");
+		}
+		
+		PrintWriter out;
+		try {
+			out = new PrintWriter(new FileWriter("resources/comissions/default.txt"));
+			out.write(this.jtaComissions.getText());
+			out.close();
+		}catch(Exception e) {
+    		e.printStackTrace();
+		}
     }  
     private void updateDoctorsTable() throws FileException {
     	doctorsData.clear();
