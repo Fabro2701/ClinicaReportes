@@ -64,15 +64,15 @@ public class Report {
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("resumen");
          
-     
- 
+        Cell cell = null;
+        
         int rowCount = 1;
         int columnCount = 0;
         
         //header
         Row row = sheet.createRow(rowCount);
         for(String att:Report.attributes) {
-        	Cell cell = row.createCell(++columnCount);
+        	cell = row.createCell(++columnCount);
 			cell.setCellValue(att);
         }
         
@@ -82,16 +82,19 @@ public class Report {
         	row = sheet.createRow(++rowCount);
         	columnCount = 0;
 			for(String att:Report.attributes) {
-				Cell cell = row.createCell(++columnCount);
+				cell = row.createCell(++columnCount);
 				cell.setCellValue(sale.data.get(Sale.attributes.get(att)));
 			}
 		}
         
         //Sale subtotal
         rowCount = 1;
+        columnCount++;
+        cell = sheet.getRow(1).createCell(columnCount);
+        cell.setCellValue("Subtotal");
         for(Sale sale:this.ownSales) {
         	row = sheet.getRow(++rowCount);
-			Cell cell = row.createCell(columnCount);
+			cell = row.createCell(columnCount);
 			cell.setCellValue(sale.subtotal);
 		}
 
@@ -101,13 +104,13 @@ public class Report {
         columnCount++;
 		for(double v:this.calculations) {
 			row = sheet.getRow(++rowCount);
-			Cell cell = row.createCell(columnCount);
+			cell = row.createCell(columnCount);
 			cell.setCellValue(v);
 			sum += v;
 		}
 		
 		row = sheet.createRow(++rowCount);
-		Cell cell = row.createCell(++columnCount);
+		cell = row.createCell(++columnCount);
 		cell.setCellValue(sum);
 		
 //        for (Object[] aBook : bookData) {

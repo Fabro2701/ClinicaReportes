@@ -47,9 +47,11 @@ public class ReportsCreator {
 				Sale sale = new Sale();
 				int i=0;
 				for(Cell cell: row) {  	
+					
 					switch(formulaEvaluator.evaluateInCell(cell).getCellType())  
 					{  
 					case Cell.CELL_TYPE_NUMERIC:   //field that represents numeric cell type  
+						sale.data.add(String.valueOf(cell.getNumericCellValue()) );
 						if(i==14) {
 							sale.subtotal = cell.getNumericCellValue();
 						}
@@ -58,8 +60,12 @@ public class ReportsCreator {
 						sale.data.add(cell.getStringCellValue());
 						break;  
 					}  
+					
 					i++;
 				}  
+				for(int j=0;j<sale.data.size();j++) {
+					System.out.println("j: "+j+" ->> "+sale.data.get(j));
+				}
 				this.sales.add(sale);
 			}  
 		} catch (Exception e) {
