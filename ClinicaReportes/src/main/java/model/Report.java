@@ -47,7 +47,6 @@ public class Report {
 				this.ownSales.add(sale);
 			}
 		}
-		sales.removeAll(this.ownSales);
 	}
 
 	public void setCalculations(ComissionsManager comissionsManager) {
@@ -86,6 +85,8 @@ public class Report {
 				cell.setCellValue(sale.data.get(Sale.attributes.get(att)));
 			}
 		}
+
+        columnCount++;
         
         //Sale subtotal
         rowCount = 1;
@@ -98,16 +99,31 @@ public class Report {
 			cell.setCellValue(sale.subtotal);
 		}
 
+        
         //subtotal comission
-        double sum=0.0;
         rowCount = 1;
         columnCount++;
+        cell = sheet.getRow(1).createCell(columnCount);
+        cell.setCellValue("Comisión");
 		for(double v:this.calculations) {
 			row = sheet.getRow(++rowCount);
 			cell = row.createCell(columnCount);
+			cell.setCellValue(Math.round(v * 100.0) / 100.0);
+		}
+		
+		//final subtotal 
+        rowCount = 1;
+        columnCount++;
+        cell = sheet.getRow(1).createCell(columnCount);
+        cell.setCellValue("Total");
+        double sum=0.0;
+        for(int i=0;i<this.ownSales.size();i++) {
+        	row = sheet.getRow(++rowCount);
+			cell = row.createCell(columnCount);
+			double v = Math.round((this.ownSales.get(i).subtotal-this.calculations.get(i)) * 100.0) / 100.0;
 			cell.setCellValue(v);
 			sum += v;
-		}
+        }
 		
 		row = sheet.createRow(++rowCount);
 		cell = row.createCell(++columnCount);

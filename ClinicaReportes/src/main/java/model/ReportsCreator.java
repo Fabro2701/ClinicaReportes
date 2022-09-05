@@ -37,11 +37,10 @@ public class ReportsCreator {
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			HSSFWorkbook wb=new HSSFWorkbook(fis);   
-			//creating a Sheet object to retrieve the object  
 			HSSFSheet sheet=wb.getSheetAt(0); 
 			FormulaEvaluator formulaEvaluator=wb.getCreationHelper().createFormulaEvaluator();  
 
-			for(Row row: sheet)     //iteration over row using for each loop  
+			for(Row row: sheet)
 			{  
 				if(row.getRowNum()<=8)continue;
 				Sale sale = new Sale();
@@ -62,31 +61,22 @@ public class ReportsCreator {
 					}  
 					
 					i++;
-				}  
-				for(int j=0;j<sale.data.size();j++) {
-					System.out.println("j: "+j+" ->> "+sale.data.get(j));
-				}
+				} 
 				this.sales.add(sale);
 			}  
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new FileException("Un Problema leyendo "+file.getAbsolutePath());
-		}  
-		
-		
+		}  	
 	}
-	
 	public void generate(String destination, JFrame frame) {
 		for(Doctor doctor:doctorManager) {
 			Report report = new Report(doctor);
 			report.extract(sales);
 			report.setCalculations(comissionsManager);
 			report.save(destination);
-			sales.removeAll(report.ownSales);
 		}
-		if(sales.size() > 0) {
-			informUnknown(frame);
-		}
+		informUnknown(frame);
 	}
 	private void informUnknown(JFrame frame) {
 		if(frame == null)System.err.println("No frame assigned");
