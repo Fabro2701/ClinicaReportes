@@ -63,6 +63,7 @@ public class Report {
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("resumen");
          
+        
         Cell cell = null;
         
         int rowCount = 1;
@@ -128,6 +129,13 @@ public class Report {
 		row = sheet.createRow(++rowCount);
 		cell = row.createCell(++columnCount);
 		cell.setCellValue(sum);
+		
+		
+		//resizing columns
+		for(int i=0;i<15;i++) {
+			sheet.autoSizeColumn(i);
+		}
+		
 		
 //        for (Object[] aBook : bookData) {
 //            Row row = sheet.createRow(++rowCount);

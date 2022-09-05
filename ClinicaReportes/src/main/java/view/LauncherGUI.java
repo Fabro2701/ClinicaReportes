@@ -52,6 +52,7 @@ public class LauncherGUI extends javax.swing.JFrame {
 	    	reportsCreator = new ReportsCreator(doctorManager, this.comissionsManager);
 	    	
 	    	this.loadComissionFile();
+	    	this.jbApplyActionPerformed(null);
 	    	
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, e);
@@ -325,6 +326,7 @@ public class LauncherGUI extends javax.swing.JFrame {
     	}catch(Exception e) {
     		e.printStackTrace();
     		JOptionPane.showMessageDialog(this, "Error en la sintaxis de las comisiones");
+    		return;
 		}
 		
 		PrintWriter out;

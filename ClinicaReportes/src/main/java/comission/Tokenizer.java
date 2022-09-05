@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 
 import org.json.JSONObject;
 
+import exceptions.ParsingException;
+
 public class Tokenizer {
 	private int _cursor;
 	private String _string;
@@ -29,7 +31,8 @@ public class Tokenizer {
 	public boolean hasMoreTokens() {
 		return this._cursor < this._string.length();
 	}
-	public JSONObject getNextToken() {
+	boolean debug = false;
+	public JSONObject getNextToken() throws ParsingException {
 		if(!this.hasMoreTokens()) {
 			//System.err.println("No more tokens");
 			return null;
@@ -48,19 +51,19 @@ public class Tokenizer {
 			
 			
 			if(tokenValue==null) {
-				//System.out.println(0);
+				if(debug)System.out.println(0);
 				continue;
 			}
 			if(tokenType == null) {
-				//System.out.println(1);
+				if(debug)System.out.println(1);
 				return this.getNextToken();
 			}
 
-			//System.out.println("2  "+tokenValue);
+			if(debug)System.out.println("2  "+tokenValue);
 			return new JSONObject().put("type", tokenType).put("value",tokenValue);
 		}
 		//System.err.println("Unexpected token "+string.charAt(0));
-		return null;
+		throw new ParsingException(string + " doesnt match");
 	}
 	/**
 	 * Return the substring that matched with the RE or null otherwise
@@ -69,7 +72,7 @@ public class Tokenizer {
 	 * @return
 	 */
 	private String _match(String regexp, String string) {
-		//System.out.println(regexp+ "   -   < "+string+" >");
+		if(debug)System.out.println(regexp+ "   -   < "+string+" >");
 		Pattern p = Pattern.compile(regexp);
 		Matcher m = p.matcher(string); 
 		if(!m.find()||m.start()!=0) {

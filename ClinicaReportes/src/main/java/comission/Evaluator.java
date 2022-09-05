@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import exceptions.ParsingException;
 import model.Sale;
 
 
@@ -69,7 +70,7 @@ public class Evaluator {
 		}
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws ParsingException {
 		String test1 = "1.4(\"Rubro\" = \"Servicios\")(\"Subtotal\" < 55).\n"
 				     + "2.4(\"Subtotal\" > 55).";
 		Parser parser = new Parser();
