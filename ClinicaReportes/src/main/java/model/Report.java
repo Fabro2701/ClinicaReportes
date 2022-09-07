@@ -136,24 +136,7 @@ public class Report {
 			sheet.autoSizeColumn(i);
 		}
 		
-		
-//        for (Object[] aBook : bookData) {
-//            Row row = sheet.createRow(++rowCount);
-//             
-//            columnCount = 0;
-//             
-//            for (Object field : aBook) {
-//                Cell cell = row.createCell(++columnCount);
-//                if (field instanceof String) {
-//                    cell.setCellValue((String) field);
-//                } else if (field instanceof Integer) {
-//                    cell.setCellValue((Integer) field);
-//                }
-//            }
-//             
-//        }
-		
-		
+		//saving 
 		FileOutputStream outputStream;
 		try {
 			File file = new File(destination+this.doctor.getFullname()+this.doctor.getCMP()+".xlsx");
@@ -167,5 +150,4 @@ public class Report {
         
 		
 	}
-
 }

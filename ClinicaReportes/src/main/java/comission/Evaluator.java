@@ -61,11 +61,21 @@ public class Evaluator {
 		}
 		else {//always subtotal
 			double r = right.getDouble("value");
-			if(op.equals("<")) {
-				return sale.subtotal < r;
+			if(sale.subtotal>=0) {
+				if(op.equals("<")) {
+					return sale.subtotal < r;
+				}
+				else {
+					return sale.subtotal > r;
+				}
 			}
 			else {
-				return sale.subtotal > r;
+				if(op.equals("<")) {
+					return -sale.subtotal < r;
+				}
+				else {
+					return -sale.subtotal > r;
+				}
 			}
 		}
 	}

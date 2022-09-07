@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -10,9 +11,9 @@ import java.util.Vector;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-
-import org.json.JSONArray;
 
 import comission.ComissionsManager;
 import exceptions.FileException;
@@ -42,6 +43,7 @@ public class LauncherGUI extends javax.swing.JFrame {
 	    	doctorsTableModel = new DefaultTableModel(doctorsData,header);
 	    	
 	        initComponents();
+	        this.jtaComissions.setBackground(Color.lightGray);
 	        
 	    	this.jTableDoctors.getColumn("CMP").setMinWidth(110);
 	    	this.jTableDoctors.getColumn("CMP").setPreferredWidth(110);
@@ -58,6 +60,20 @@ public class LauncherGUI extends javax.swing.JFrame {
 			JOptionPane.showMessageDialog(this, e);
 			e.printStackTrace();
 		}
+    	this.jtaComissions.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            	LauncherGUI.this.jtaComissions.setBackground(Color.lightGray);
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            	LauncherGUI.this.jtaComissions.setBackground(Color.lightGray);
+            }
+            @Override
+            public void changedUpdate(DocumentEvent arg0) {
+            	LauncherGUI.this.jtaComissions.setBackground(Color.lightGray);
+            }
+        });
     	
     }
 
@@ -328,7 +344,8 @@ public class LauncherGUI extends javax.swing.JFrame {
     		JOptionPane.showMessageDialog(this, "Error en la sintaxis de las comisiones");
     		return;
 		}
-		
+
+        this.jtaComissions.setBackground(Color.white);
 		PrintWriter out;
 		try {
 			out = new PrintWriter(new FileWriter("resources/comissions/default.txt"));
@@ -376,22 +393,22 @@ public class LauncherGUI extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LauncherGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LauncherGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LauncherGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LauncherGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(LauncherGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(LauncherGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(LauncherGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(LauncherGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
         //</editor-fold>
 
         /* Create and display the form */
