@@ -80,12 +80,21 @@ public class ReportsCreator {
 	}
 	private void informUnknown(JFrame frame) {
 		if(frame == null)System.err.println("No frame assigned");
-		List<String>doctors = new ArrayList<String>();
+		List<String>unknownDoctors = new ArrayList<String>();
 		for(Sale sale:sales) {
 			String cmp = sale.data.get(Sale.attributes.get("CMP"));
-			if(!doctors.contains(cmp)) {
-				JOptionPane.showMessageDialog(frame, "CMP: "+cmp+" no declarado");
-				doctors.add(cmp);
+			boolean found = false;
+			for(Doctor doc:this.doctorManager) {
+				if(cmp.equals(doc.getCMP())) {
+					found = true;
+					break;
+				}
+			}
+			if(!found) {
+				if(!unknownDoctors.contains(cmp)) {
+					JOptionPane.showMessageDialog(frame, "CMP: "+cmp+" no declarado");
+					unknownDoctors.add(cmp);
+				}
 			}
 		}
 	}
