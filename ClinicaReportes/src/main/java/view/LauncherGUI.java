@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import comission.ComissionsManager;
@@ -295,7 +296,8 @@ public class LauncherGUI extends javax.swing.JFrame {
 	private void jbAddDocumentActionPerformed(java.awt.event.ActionEvent evt) {                                              
 		JFileChooser chooser = new JFileChooser();
 		chooser.setMultiSelectionEnabled(true);
-		chooser.setCurrentDirectory(new File("resources/exampledata/"));
+    	chooser.setFileFilter(new FileNameExtensionFilter("xls files", "xls"));
+		//chooser.setCurrentDirectory(new File("resources/exampledata/"));
 		int result = chooser.showOpenDialog(this);
 		
 		if (result == JFileChooser.APPROVE_OPTION) {
@@ -319,7 +321,7 @@ public class LauncherGUI extends javax.swing.JFrame {
     private void jbSelectDestinationFolderActionPerformed(java.awt.event.ActionEvent evt) {    
     	JFileChooser chooser = new JFileChooser();
     	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setCurrentDirectory(new File("resources/"));
+		//chooser.setCurrentDirectory(new File("resources/"));
 		int result = chooser.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = chooser.getSelectedFile();
